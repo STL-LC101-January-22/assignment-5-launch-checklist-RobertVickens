@@ -1,5 +1,5 @@
 // Write your helper functions here!
-//require('isomorphic-fetch');
+require('isomorphic-fetch');
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
    // Here is the HTML formatting for our mission target div.
@@ -27,38 +27,65 @@ function validateInput(testInput) {
    }
 }
 
+
+
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
-   let pilotStatus = document.getElementById("pilotStatus");
-   let copilotStatus = document.getElementById("copilotStatus");
-   pilotStatus.innerText = `${pilot} ready`;
-   copilotStatus.innerText = `${copilot} ready`;
+    
 
-   if(fuelLevel < 10000){
-       let faultyItems = document.getElementById('faultyItems');
-       faultyItems.style.visibility = visible;
-       let fuelStatus = document.getElementById('fuelStatus');
-       fuelStatus.innerText = `Not enough fuel for the journey`;
-       let launchStatus = document.getElementById('launchStatus');
-       launchStatus.innerText = `Shuttle not ready for launch`;
-       launchStatus.style.color = 'red';
-   }
-
-   if(cargoLevel > 10000){
-    let faultyItems = document.getElementById('faultyItems');
-    faultyItems.style.visibility = visible;
+    let pilotStatus = document.getElementById("pilotStatus");
+    let copilotStatus = document.getElementById("copilotStatus");
+    
+    let fuelStatus = document.getElementById('fuelStatus');
     let cargoStatus = document.getElementById('cargoStatus');
-    cargoStatus.innerText = 'there is too much mass for the shuttle to take off';
-    let launchStatus = document.getElementById('launchStatus');
-    launchStatus.innerText = `Shuttle not ready for launch`;
-    launchStatus.style.color = 'red';
+
+
+    if (validateInput(pilot) === "Empty"|| validateInput(copilot) === "Empty"|| validateInput(fuelLevel) === "Empty" || validateInput(cargoLevel) === "Empty") {
+        alert("All fields are required!");
+        
+     } else if(validateInput(pilot) === "Is a Number"|| validateInput(copilot) === "Is a Number"|| validateInput(fuelLevel) === "Not a Number" || validateInput(cargoLevel) === "Not a Number") {
+        alert("Make sure to enter valid information for each field!");
+     } else {
+        list.style.visibility = 'visible';
+            pilotStatus.innerText = `${pilot} ready`;
+            copilotStatus.innerText = `${copilot} ready`;
+            let launchStatus = document.getElementById('launchStatus');
+     
+
+   if(fuelLevel < 10000 && cargoLevel <= 10000){
+       fuelStatus.innerHTML = `Fuel level too low for launch`;
+       cargoStatus.innerHTML = "Cargo mass low enough for launch";
+       launchStatus.innerHTML = `Shuttle Not Ready for Launch`;
+       launchStatus.style.color = '#C7254E';
+       //console.log(fuelLevel, cargoLevel);
    }
 
-   if(fuelLevel > 10000 && cargoLevel < 10000){
+//    if(cargoLevel > 10000){
+//     let faultyItems = document.getElementById('faultyItems');
+    
+    
+//     cargoStatus.innerText = 'there is too much mass for the shuttle to take off';
+//     let launchStatus = document.getElementById('launchStatus');
+//     launchStatus.innerText = `Shuttle Not Ready for Launch`;
+//     launchStatus.style.color = 'red';
+
+   else if(fuelLevel >= 10000 && cargoLevel > 10000){
        let launchStatus = document.getElementById('launchStatus');
-       launchStatus.style.color = 'green';
-       launchStatus.innerText = `Shuttle is ready for launch`;
+       fuelStatus.innerHTML = `Fuel level high enough for launch`
+       cargoStatus.innerHTML = `Cargo mass too heavy for launch`
+       launchStatus.innerText = `Shuttle Not Ready for Launch`;
+       launchStatus.style.color = '#C7254E';
+   } else if(fuelLevel < 10000 && cargoLevel > 10000){
+    fuelStatus.innerHTML = `Fuel level too low for launch`
+    cargoStatus.innerHTML = `Cargo mass too heavy for launch`
+    launchStatus.innerText = `Shuttle Not Ready for Launch`;
+    launchStatus.style.color = '#C7254E';
+   } else {
+    fuelStatus.innerHTML = `Fuel level high enough for launch`
+    cargoStatus.innerHTML = `Cargo mass low enough for launch`
+    launchStatus.innerText = `Shuttle is Ready for Launch`;
+    launchStatus.style.color = '#419F6A';
    }
-   document.getElementById('formSubmit').event.preventDefault();
+}
 }
 
 async function myFetch() {
