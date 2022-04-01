@@ -46,8 +46,8 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
         alert("Make sure to enter valid information for each field!");
      } else {
         list.style.visibility = 'visible';
-            pilotStatus.innerText = `${pilot} ready`;
-            copilotStatus.innerText = `${copilot} ready`;
+            pilotStatus.innerText = `Pilot ${pilot} is ready for launch`;
+            copilotStatus.innerText = `Co-pilot ${copilot} is ready for launch`;
             let launchStatus = document.getElementById('launchStatus');
      
 
